@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package candlestick;
+option go_package = "github.com/warpgr/tdba_common/protocol/candlestick/v1;candlestick";
+
+
+
+message Candlestick {
+    int64 open_time = 1;
+    double open = 2;
+    double high = 3 ;
+    double low = 4;
+    double close = 5;
+    double volume = 6;
+    int64 close_time = 7;
+    double quote_asset_volume = 8;
+    int64 trade_num = 9;
+    double taker_buy_base_asset_volume = 10;
+    double taker_buy_quote_asset_volume = 11;
+}

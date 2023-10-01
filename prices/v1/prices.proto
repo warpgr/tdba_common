@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package prices;
+option go_package = "github.com/warpgr/tdba_common/protocol/prices/v1;prices";
+
+
+message GetPriceForRequest {
+    string id = 1;
+    string exchange = 2;
+    double symbol = 3;
+}
+
+message GetPriceForResponse {
+    string id = 1;
+    string exchange = 2;
+    map <string, double> price = 3;
+}
+
+message GetPricesForRequest {
+    string id = 1;
+    string exchange = 2;
+    repeated string symbols = 3;
+}
+
+message GetPricesForResponse {
+    string id = 1;
+    string exchange = 2;
+    map <string, double> prices = 3;
+}
+
+message GetPricesFromToRequest {
+    string id = 1;
+    string exchange = 2;
+    repeated string symbol = 3;
+    int64 from = 4;
+    int64 to = 5;
+}
+
+message GetPricesFromToResponse {
+    string id = 1;
+    string exchange = 2;
+    map <string, double> prices = 3;
+}
