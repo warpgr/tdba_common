@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package prices;
+package prices.v1;
 option go_package = "github.com/warpgr/tdba_common/protocol/prices/v1;prices";
 
 import "prices/v1/prices.proto";

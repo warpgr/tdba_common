@@ -19,11 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	PricesService_GetPriceFor_FullMethodName         = "/prices.PricesService/GetPriceFor"
-	PricesService_PollPriceFor_FullMethodName        = "/prices.PricesService/PollPriceFor"
-	PricesService_GetPricesFor_FullMethodName        = "/prices.PricesService/GetPricesFor"
-	PricesService_PollPricesFor_FullMethodName       = "/prices.PricesService/PollPricesFor"
-	PricesService_PollPricesFromToFor_FullMethodName = "/prices.PricesService/PollPricesFromToFor"
+	PricesService_GetPriceFor_FullMethodName         = "/prices.v1.PricesService/GetPriceFor"
+	PricesService_PollPriceFor_FullMethodName        = "/prices.v1.PricesService/PollPriceFor"
+	PricesService_GetPricesFor_FullMethodName        = "/prices.v1.PricesService/GetPricesFor"
+	PricesService_PollPricesFor_FullMethodName       = "/prices.v1.PricesService/PollPricesFor"
+	PricesService_PollPricesFromToFor_FullMethodName = "/prices.v1.PricesService/PollPricesFromToFor"
 )
 
 // PricesServiceClient is the client API for PricesService service.
@@ -306,7 +306,7 @@ func (x *pricesServicePollPricesFromToForServer) Send(m *GetPricesFromToResponse
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var PricesService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "prices.PricesService",
+	ServiceName: "prices.v1.PricesService",
 	HandlerType: (*PricesServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

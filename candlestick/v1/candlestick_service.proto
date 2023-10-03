@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package candlestick;
+package candlestick.v1;
 option go_package = "github.com/warpgr/tdba_common/protocol/candlestick/v1;candlestick";
 
 import "candlestick/v1/candlestick.proto";

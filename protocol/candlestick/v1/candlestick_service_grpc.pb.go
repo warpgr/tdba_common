@@ -19,10 +19,10 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	CandlestickService_GetCandlestickByTimePoint_FullMethodName = "/candlestick.CandlestickService/GetCandlestickByTimePoint"
-	CandlestickService_PollCandlesticksFromTo_FullMethodName    = "/candlestick.CandlestickService/PollCandlesticksFromTo"
-	CandlestickService_GetLastCandlestick_FullMethodName        = "/candlestick.CandlestickService/GetLastCandlestick"
-	CandlestickService_PollLastCandlesticks_FullMethodName      = "/candlestick.CandlestickService/PollLastCandlesticks"
+	CandlestickService_GetCandlestickByTimePoint_FullMethodName = "/candlestick.v1.CandlestickService/GetCandlestickByTimePoint"
+	CandlestickService_PollCandlesticksFromTo_FullMethodName    = "/candlestick.v1.CandlestickService/PollCandlesticksFromTo"
+	CandlestickService_GetLastCandlestick_FullMethodName        = "/candlestick.v1.CandlestickService/GetLastCandlestick"
+	CandlestickService_PollLastCandlesticks_FullMethodName      = "/candlestick.v1.CandlestickService/PollLastCandlesticks"
 )
 
 // CandlestickServiceClient is the client API for CandlestickService service.
@@ -247,7 +247,7 @@ func (x *candlestickServicePollLastCandlesticksServer) Send(m *Candlestick) erro
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
 var CandlestickService_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "candlestick.CandlestickService",
+	ServiceName: "candlestick.v1.CandlestickService",
 	HandlerType: (*CandlestickServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
