@@ -29,13 +29,13 @@ type SyncBridge[SharedDataType interface{}] struct {
 	onFailure  *func(args ...any)
 }
 
-func NewSyncBridge[SharedDataType interface{}](delta int, name string) *SyncBridge[SharedDataType] {
+func NewSyncBridge[SharedDataType interface{}](delta int, name string, bufferSize int) *SyncBridge[SharedDataType] {
 	sb := SyncBridge[SharedDataType]{
 		isInProcess:   &atomic.Bool{},
 		dataTaken:     &atomic.Bool{},
 		syncWork:      &sync.WaitGroup{},
 		name:          name,
-		sharedChannel: make(chan SharedDataType, 1),
+		sharedChannel: make(chan SharedDataType, bufferSize),
 	}
 	sb.isInProcess.Store(true)
 	sb.dataTaken.Store(true)
