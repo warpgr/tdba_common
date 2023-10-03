@@ -23,6 +23,7 @@ const (
 	PricesService_PollPriceFor_FullMethodName        = "/prices.v1.PricesService/PollPriceFor"
 	PricesService_GetPricesFor_FullMethodName        = "/prices.v1.PricesService/GetPricesFor"
 	PricesService_PollPricesFor_FullMethodName       = "/prices.v1.PricesService/PollPricesFor"
+	PricesService_PollPriceFromToFor_FullMethodName  = "/prices.v1.PricesService/PollPriceFromToFor"
 	PricesService_PollPricesFromToFor_FullMethodName = "/prices.v1.PricesService/PollPricesFromToFor"
 )
 
@@ -34,6 +35,7 @@ type PricesServiceClient interface {
 	PollPriceFor(ctx context.Context, in *GetPriceForRequest, opts ...grpc.CallOption) (PricesService_PollPriceForClient, error)
 	GetPricesFor(ctx context.Context, in *GetPricesForRequest, opts ...grpc.CallOption) (*GetPricesForResponse, error)
 	PollPricesFor(ctx context.Context, in *GetPricesForRequest, opts ...grpc.CallOption) (PricesService_PollPricesForClient, error)
+	PollPriceFromToFor(ctx context.Context, in *GetPriceForRequest, opts ...grpc.CallOption) (PricesService_PollPriceFromToForClient, error)
 	PollPricesFromToFor(ctx context.Context, in *GetPricesFromToRequest, opts ...grpc.CallOption) (PricesService_PollPricesFromToForClient, error)
 }
 
@@ -127,8 +129,40 @@ func (x *pricesServicePollPricesForClient) Recv() (*GetPricesForResponse, error)
 	return m, nil
 }
 
+func (c *pricesServiceClient) PollPriceFromToFor(ctx context.Context, in *GetPriceForRequest, opts ...grpc.CallOption) (PricesService_PollPriceFromToForClient, error) {
+	stream, err := c.cc.NewStream(ctx, &PricesService_ServiceDesc.Streams[2], PricesService_PollPriceFromToFor_FullMethodName, opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &pricesServicePollPriceFromToForClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type PricesService_PollPriceFromToForClient interface {
+	Recv() (*GetPriceForResponse, error)
+	grpc.ClientStream
+}
+
+type pricesServicePollPriceFromToForClient struct {
+	grpc.ClientStream
+}
+
+func (x *pricesServicePollPriceFromToForClient) Recv() (*GetPriceForResponse, error) {
+	m := new(GetPriceForResponse)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
 func (c *pricesServiceClient) PollPricesFromToFor(ctx context.Context, in *GetPricesFromToRequest, opts ...grpc.CallOption) (PricesService_PollPricesFromToForClient, error) {
-	stream, err := c.cc.NewStream(ctx, &PricesService_ServiceDesc.Streams[2], PricesService_PollPricesFromToFor_FullMethodName, opts...)
+	stream, err := c.cc.NewStream(ctx, &PricesService_ServiceDesc.Streams[3], PricesService_PollPricesFromToFor_FullMethodName, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -167,6 +201,7 @@ type PricesServiceServer interface {
 	PollPriceFor(*GetPriceForRequest, PricesService_PollPriceForServer) error
 	GetPricesFor(context.Context, *GetPricesForRequest) (*GetPricesForResponse, error)
 	PollPricesFor(*GetPricesForRequest, PricesService_PollPricesForServer) error
+	PollPriceFromToFor(*GetPriceForRequest, PricesService_PollPriceFromToForServer) error
 	PollPricesFromToFor(*GetPricesFromToRequest, PricesService_PollPricesFromToForServer) error
 	mustEmbedUnimplementedPricesServiceServer()
 }
@@ -186,6 +221,9 @@ func (UnimplementedPricesServiceServer) GetPricesFor(context.Context, *GetPrices
 }
 func (UnimplementedPricesServiceServer) PollPricesFor(*GetPricesForRequest, PricesService_PollPricesForServer) error {
 	return status.Errorf(codes.Unimplemented, "method PollPricesFor not implemented")
+}
+func (UnimplementedPricesServiceServer) PollPriceFromToFor(*GetPriceForRequest, PricesService_PollPriceFromToForServer) error {
+	return status.Errorf(codes.Unimplemented, "method PollPriceFromToFor not implemented")
 }
 func (UnimplementedPricesServiceServer) PollPricesFromToFor(*GetPricesFromToRequest, PricesService_PollPricesFromToForServer) error {
 	return status.Errorf(codes.Unimplemented, "method PollPricesFromToFor not implemented")
@@ -281,6 +319,27 @@ func (x *pricesServicePollPricesForServer) Send(m *GetPricesForResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
+func _PricesService_PollPriceFromToFor_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(GetPriceForRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(PricesServiceServer).PollPriceFromToFor(m, &pricesServicePollPriceFromToForServer{stream})
+}
+
+type PricesService_PollPriceFromToForServer interface {
+	Send(*GetPriceForResponse) error
+	grpc.ServerStream
+}
+
+type pricesServicePollPriceFromToForServer struct {
+	grpc.ServerStream
+}
+
+func (x *pricesServicePollPriceFromToForServer) Send(m *GetPriceForResponse) error {
+	return x.ServerStream.SendMsg(m)
+}
+
 func _PricesService_PollPricesFromToFor_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(GetPricesFromToRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -327,6 +386,11 @@ var PricesService_ServiceDesc = grpc.ServiceDesc{
 		{
 			StreamName:    "PollPricesFor",
 			Handler:       _PricesService_PollPricesFor_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "PollPriceFromToFor",
+			Handler:       _PricesService_PollPriceFromToFor_Handler,
 			ServerStreams: true,
 		},
 		{

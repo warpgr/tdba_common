@@ -11,5 +11,6 @@ service PricesService {
     rpc PollPriceFor(GetPriceForRequest) returns (stream GetPriceForResponse) {}
     rpc GetPricesFor(GetPricesForRequest) returns (GetPricesForResponse) {}
     rpc PollPricesFor(GetPricesForRequest) returns (stream GetPricesForResponse) {}
+    rpc PollPriceFromToFor(GetPriceForRequest) returns (stream GetPriceForResponse) {}
     rpc PollPricesFromToFor(GetPricesFromToRequest) returns (stream GetPricesFromToResponse) {}
 }
