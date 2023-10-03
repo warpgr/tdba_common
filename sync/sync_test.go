@@ -18,7 +18,7 @@ func TestSyncBridge(t *testing.T) {
 	var resultOfSteps []int
 	iterator := 1
 
-	controller := NewSyncBridge[int](1, "test-controller-1")
+	controller := NewSyncBridge[int](1, "test-controller-1", 1)
 
 	go func() {
 		defer controller.Done()
@@ -27,7 +27,7 @@ func TestSyncBridge(t *testing.T) {
 	}()
 	resultOfSteps = append(resultOfSteps, controller.RecvData())
 
-	controller = NewSyncBridge[int](1, "test-controller-2")
+	controller = NewSyncBridge[int](1, "test-controller-2", 1)
 	go func() {
 		defer controller.Done()
 		controller.SendData(iterator) // 2

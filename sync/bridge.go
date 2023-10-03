@@ -122,7 +122,7 @@ func RunAsync[SharedDataType any](
 	f interface{},
 	args ...any) *SyncBridge[SharedDataType] {
 
-	bridge := NewSyncBridge[SharedDataType](1, name)
+	bridge := NewSyncBridge[SharedDataType](1, name, 1)
 	go func() {
 		defer bridge.Done() // for avoiding deadlocks
 		switch fn := f.(type) {
@@ -138,7 +138,7 @@ func RunAsync[SharedDataType any](
 
 func RunAsyncWithBinding[SharedDataType any](nameOfModule string, functionObject *BoundValue) (*SyncBridge[SharedDataType], error) {
 	// TODO: make sure types are correct.
-	bridge := NewSyncBridge[SharedDataType](1, nameOfModule)
+	bridge := NewSyncBridge[SharedDataType](1, nameOfModule, 1)
 	functionObject.argValues = pushBridgeInArgs[SharedDataType](functionObject.argValues, bridge)
 	err := functionObject.CheckArgs()
 	if err != nil {
