@@ -13,7 +13,8 @@ message GetPriceForRequest {
 message GetPriceForResponse {
     string id = 1;
     string exchange = 2;
-    double price = 3;
+    string symbol = 3;
+    double price = 4;
 }
 
 message GetPricesForRequest {
