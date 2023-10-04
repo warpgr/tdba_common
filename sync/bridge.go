@@ -13,8 +13,6 @@ import (
 type SyncBridge[SharedDataType interface{}] struct {
 	// Sets true if want to start job. And false when want to finish.
 	isInProcess *atomic.Bool
-	// Is data taken from channel
-	dataTaken *atomic.Bool
 	// Before starting need to set delta number,
 	// it is a count of goroutines which you want to wait after work finishing.
 	// call Done() for finishing current subscribed goroutine.
@@ -32,13 +30,11 @@ type SyncBridge[SharedDataType interface{}] struct {
 func NewSyncBridge[SharedDataType interface{}](delta int, name string, bufferSize int) *SyncBridge[SharedDataType] {
 	sb := SyncBridge[SharedDataType]{
 		isInProcess:   &atomic.Bool{},
-		dataTaken:     &atomic.Bool{},
 		syncWork:      &sync.WaitGroup{},
 		name:          name,
 		sharedChannel: make(chan SharedDataType, bufferSize),
 	}
 	sb.isInProcess.Store(true)
-	sb.dataTaken.Store(true)
 
 	sb.syncWork.Add(delta)
 	return &sb
@@ -94,14 +90,12 @@ func (sb *SyncBridge[SharedDataType]) BindFailureHandler(failureHandler func(arg
 }
 
 func (sb *SyncBridge[SharedDataType]) RecvData() SharedDataType {
-	defer sb.dataTaken.Store(true)
 	return <-sb.sharedChannel
 }
 
 func (sb *SyncBridge[SharedDataType]) AwaitForData(duration time.Duration) *SharedDataType {
 	select {
 	case data := <-sb.sharedChannel:
-		sb.dataTaken.Store(true)
 		return &data
 	case <-time.After(duration):
 		return nil
@@ -109,10 +103,7 @@ func (sb *SyncBridge[SharedDataType]) AwaitForData(duration time.Duration) *Shar
 }
 
 func (sb *SyncBridge[SharedDataType]) SendData(data SharedDataType) {
-	if sb.dataTaken.Load() {
-		sb.dataTaken.Store(false)
-		sb.sharedChannel <- data
-	}
+	sb.sharedChannel <- data
 }
 
 // Run modules which cyclic working depends from inProgress flag of bridge.
