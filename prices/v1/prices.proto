@@ -29,6 +29,20 @@ message GetPricesForResponse {
     map <string, double> prices = 3;
 }
 
+message GetPriceFromToRequest {
+    string id = 1;
+    string exchange = 2;
+    string symbols = 3;
+    int64 from = 4;
+    int64 to = 5;
+}
+
+message GetPriceFromToResponse {
+    string id = 1;
+    string exchange = 2;
+    double price = 3;
+}
+
 message GetPricesFromToRequest {
     string id = 1;
     string exchange = 2;
