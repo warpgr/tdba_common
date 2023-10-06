@@ -8,6 +8,7 @@ message GetPriceForRequest {
     string id = 1;
     string exchange = 2;
     string symbol = 3;
+    int64 suspend_mili = 4;
 }
 
 message GetPriceForResponse {
