@@ -3,11 +3,11 @@ package types
 // --------------- PairOrderBehavior -------------------
 // Represents behavior of trading pair in exchange.
 type PairOrderBehavior struct {
-	Entry      float64  `json:"entry" bson:"entry"`           // Estimated Entry price.
-	StopLoss   float64  `json:"stopLoss" bson:"stopLoss"`     // Estimated StopLoss price.
-	TakeProfit float64  `json:"takeProfit" bson:"takeProfit"` // Estimated TakeProfit price.
-	Side       SideType `json:"side" bson:"side"`             // Position type BUY/.SELL.
-	Quantity   float64  `json:"quantity" bson:"quantity"`     // Quantity of order.
+	Entry      float64 `json:"entry" bson:"entry"`           // Estimated Entry price.
+	StopLoss   float64 `json:"stopLoss" bson:"stopLoss"`     // Estimated StopLoss price.
+	TakeProfit float64 `json:"takeProfit" bson:"takeProfit"` // Estimated TakeProfit price.
+	Side       string  `json:"side" bson:"side"`             // Position type BUY/.SELL.
+	Quantity   float64 `json:"quantity" bson:"quantity"`     // Quantity of order.
 }
 
 // ------------------- Estimation --------------
