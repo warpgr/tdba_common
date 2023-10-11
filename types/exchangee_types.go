@@ -59,35 +59,35 @@ type SideType string
 type TimeInForceType string
 
 const (
-	OrderStatusTypeNew             OrderStatusType = "NEW"
-	OrderStatusTypePartiallyFilled OrderStatusType = "PARTIALLY_FILLED"
-	OrderStatusTypeFilled          OrderStatusType = "FILLED"
-	OrderStatusTypeCanceled        OrderStatusType = "CANCELED"
-	OrderStatusTypePendingCancel   OrderStatusType = "PENDING_CANCEL"
-	OrderStatusTypeRejected        OrderStatusType = "REJECTED"
-	OrderStatusTypeExpired         OrderStatusType = "EXPIRED"
+	OrderStatusTypeNew             string = "NEW"
+	OrderStatusTypePartiallyFilled string = "PARTIALLY_FILLED"
+	OrderStatusTypeFilled          string = "FILLED"
+	OrderStatusTypeCanceled        string = "CANCELED"
+	OrderStatusTypePendingCancel   string = "PENDING_CANCEL"
+	OrderStatusTypeRejected        string = "REJECTED"
+	OrderStatusTypeExpired         string = "EXPIRED"
 
-	OrderTypeLimit           OrderType = "LIMIT"
-	OrderTypeMarket          OrderType = "MARKET"
-	OrderTypeLimitMaker      OrderType = "LIMIT_MAKER"
-	OrderTypeStopLoss        OrderType = "STOP_LOSS"
-	OrderTypeStopLossLimit   OrderType = "STOP_LOSS_LIMIT"
-	OrderTypeTakeProfit      OrderType = "TAKE_PROFIT"
-	OrderTypeTakeProfitLimit OrderType = "TAKE_PROFIT_LIMIT"
+	OrderTypeLimit           string = "LIMIT"
+	OrderTypeMarket          string = "MARKET"
+	OrderTypeLimitMaker      string = "LIMIT_MAKER"
+	OrderTypeStopLoss        string = "STOP_LOSS"
+	OrderTypeStopLossLimit   string = "STOP_LOSS_LIMIT"
+	OrderTypeTakeProfit      string = "TAKE_PROFIT"
+	OrderTypeTakeProfitLimit string = "TAKE_PROFIT_LIMIT"
 
-	SideTypeBuy  SideType = "BUY"
-	SideTypeSell SideType = "SELL"
+	SideTypeBuy  string = "BUY"
+	SideTypeSell string = "SELL"
 
-	TimeInForceTypeGTC TimeInForceType = "GTC"
-	TimeInForceTypeIOC TimeInForceType = "IOC"
-	TimeInForceTypeFOK TimeInForceType = "FOK"
+	TimeInForceTypeGTC string = "GTC"
+	TimeInForceTypeIOC string = "IOC"
+	TimeInForceTypeFOK string = "FOK"
 )
 
 type ExchangeNameType string
 
 const (
-	BinanceSPOTExchangeName    ExchangeNameType = "BINANCE"
-	BinanceFuturesExchangeName ExchangeNameType = "BINANCE_PEREP"
+	BinanceSPOTExchangeName    string = "BINANCE"
+	BinanceFuturesExchangeName string = "BINANCE_PEREP"
 )
 
 type WorkingRequirements struct {
