@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+
+package orders.v1;
+option go_package = "github.com/warpgr/tdba_common/protocol/orders/v1;orders";
+
+import "orders/v1/orders.proto";
+
+
+
+service OrdersService {
+    rpc PlaceOrder(PlaceOrderRequest) returns (OrderStatusResponse) {}
+    rpc CancelOrder(OrderStatusRequest) returns (OrderStatusResponse) {}
+
+    rpc GetOrder(OrderStatusRequest) returns (OrderStatusResponse) {}
+    rpc PollOrder(OrderStatusRequest) returns (stream OrderStatusResponse) {}
+    
+    rpc GetOrders(OrdersStatusesRequest) returns(OrdersStatusesResponse) {}
+    rpc PollOrders(OrdersStatusesRequest) returns(stream OrdersStatusesResponse) {}
+}
+
+
+message PlaceOrderRequest {
+    string id = 1;
+    string usder_id = 2;
+    CreateOrder order = 3;
+}
+
+message OrderStatusRequest {
+    string id = 1;
+    string user_id = 2;
+    OrderDescriptorType order_descriptor = 3;
+}
+
+message OrderStatusResponse {
+    string id = 1;
+    string usder_id = 2;
+    OrderAndExchangeType order = 3;
+}
+
+message OrdersStatusesRequest {
+    string id = 1;
+    string user_id = 2;
+    repeated OrderDescriptorType orders_descriptors = 3;
+}
+
+message OrdersStatusesResponse {
+    string id = 1;
+    string usder_id = 2;
+    repeated OrderAndExchangeType order = 4;
+}

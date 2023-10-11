@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+package orders.v1;
+option go_package = "github.com/warpgr/tdba_common/protocol/orders/v1;orders";
+
+
+
+message ExchangeOrder {
+    string symbol = 1;
+    int64 order_id = 2;
+    string client_order_id = 3;
+    int64 transact_time = 4;
+    double price = 5;
+    double orig_quantity = 6;
+    double executed_quantity = 7;
+    double cummulative_quote_quantity = 8;
+    bool is_isolated = 9;
+    string status = 10;
+    string time_in_force = 11;
+    string type = 12;
+    string side = 13;
+    repeated Fill fills = 14;
+    double margin_buy_borrow_amount = 15;
+    double margin_buy_borrow_asset = 16;
+}
+
+message Fill {
+    int64 trade_id = 1;
+    double price = 2;
+    double quantity = 3;
+    double commission = 4;
+    double commision_asset = 5; 
+}
+
+message CreateOrder {
+    string exchange = 1;
+    string symbol = 2;
+    double price = 3;
+    double quantity = 4;
+    string type = 5;
+    string side = 6;
+    string time_in_force = 7;
+}
+
+message OrderDescriptorType {
+    string exchange = 1;
+    string symbol = 2;
+    int64 order_id = 3;
+    string client_order_id = 4;
+}
+
+message OrderAndExchangeType {
+    string exchange = 1;
+    ExchangeOrder order  = 2; 
+}
+
+// message 
