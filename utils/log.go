@@ -32,8 +32,8 @@ func colorMessage(msg string, color string) string {
 	return fmt.Sprintf("%v %v %v", color, msg, reset)
 }
 
-func creteLogFile(name string) *os.File {
-	formattedName := fmt.Sprintf("%v-%v-log.txt", name, time.Now().Local().Format("2006-01-02"))
+func creteLogFile(dirname, name string) *os.File {
+	formattedName := fmt.Sprintf("%v/%v-%v-log.txt", dirname, name, time.Now().Local().Format("2006-01-02"))
 	file, err := os.OpenFile(formattedName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		fmt.Printf("Error when tying to create file %v", err)
@@ -42,13 +42,25 @@ func creteLogFile(name string) *os.File {
 	return file
 }
 
+func checkAndCreateLogDir() error {
+	if _, err := os.Stat("logs"); os.IsNotExist(err) {
+		return os.Mkdir("logs", os.ModePerm)
+	}
+	return nil
+}
+
 func InitLogger() *logger {
+	if err := checkAndCreateLogDir(); err != nil {
+		fmt.Println("Can't create log dir.")
+		os.Exit(1)
+	}
+
 	lg := &logger{
-		DataFile:    creteLogFile("data"),
-		InfoFile:    creteLogFile("info"),
-		WarningFile: creteLogFile("warning"),
-		ErrorFile:   creteLogFile("error"),
-		FatalFile:   creteLogFile("fatal"),
+		DataFile:    creteLogFile("logs", "data"),
+		InfoFile:    creteLogFile("logs", "info"),
+		WarningFile: creteLogFile("logs", "warning"),
+		ErrorFile:   creteLogFile("logs", "error"),
+		FatalFile:   creteLogFile("logs", "fatal"),
 	}
 	return lg
 }
