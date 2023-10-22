@@ -71,6 +71,7 @@ func CleanupLogFiles() {
 	os.Remove(loggerInstance.WarningFile.Name())
 	os.Remove(loggerInstance.ErrorFile.Name())
 	os.Remove(loggerInstance.FatalFile.Name())
+	os.RemoveAll("logs")
 }
 
 func fmtArgs(args ...interface{}) string {
