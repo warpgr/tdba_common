@@ -2,7 +2,7 @@ syntax = "proto3";
 
 
 package orders.v1;
-option go_package = "github.com/warpgr/tdba_common/protocol/orders/v1;orders";
+option go_package = "github.com/warpgr/tdba_common/go/protocol/orders/v1;orders";
 
 import "orders/v1/orders.proto";
 
@@ -17,25 +17,29 @@ service OrdersService {
     
     rpc GetOrders(OrdersStatusesRequest) returns(OrdersStatusesResponse) {}
     rpc PollOrders(OrdersStatusesRequest) returns(stream OrdersStatusesResponse) {}
+    
+    rpc GetOrdersByUserCredenntials(GetOrderByUserCredentials) returns(GetOrdersByUserCredentialsResponse) {}
 }
-
 
 message PlaceOrderRequest {
     string id = 1;
     string usder_id = 2;
-    CreateOrder order = 3;
+    UserCredentials user_credentials = 3;
+    CreateOrder order = 4;
 }
 
 message OrderStatusRequest {
     string id = 1;
     string user_id = 2;
-    OrderDescriptorType order_descriptor = 3;
+    UserCredentials user_credentials = 3;
+    OrderDescriptorType order_descriptor = 4;
 }
 
 message OrderStatusResponse {
     string id = 1;
     string usder_id = 2;
-    OrderAndExchangeType order = 3;
+    UserCredentials user_credentials = 3;
+    OrderAndExchangeType order = 4;
 }
 
 message OrdersStatusesRequest {
@@ -48,4 +52,14 @@ message OrdersStatusesResponse {
     string id = 1;
     string usder_id = 2;
     repeated OrderAndExchangeType order = 4;
+}
+
+message GetOrderByUserCredentials {
+    string id = 1;
+    UserCredentials user_credentials = 2;
+}
+
+message GetOrdersByUserCredentialsResponse {
+    string id = 1;
+    repeated OrderAndUserCredentials  orders = 2; 
 }

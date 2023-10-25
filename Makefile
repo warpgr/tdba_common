@@ -19,5 +19,11 @@ generate-v1:
 	--go_out=./go/protocol \
 	--go-grpc_out=./go/protocol
 
+	protoc wallet/v1/*.proto \
+	--go_opt=paths=source_relative \
+	--go-grpc_opt=paths=source_relative \
+	--go_out=./go/protocol \
+	--go-grpc_out=./go/protocol
+
 
 

@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package wallet.v1;
+option go_package = "github.com/warpgr/tdba_common/go/protocol/wallet/v1;wallet";
+
+
+import "wallet/v1/wallet.proto";
+
+
+service WalletService {
+    rpc CreateWallet(CreateWalletRequest) returns (CreateWalletRequest) {}
+    rpc GetWallet(GetWalletRequest) returns(GetWalletResponse) {}
+    rpc GetUserWallets(GetUserWalletsRequest) returns (GetUserWalletsResponse) {}
+}
+
+message CreateWalletRequest {
+    string id = 1;
+    string user_id = 2;
+    WalletDescriptor wallet = 3;
+}
+
+message GetUserWalletsRequest {
+    string id = 1;
+    string user_id = 2;
+}
+
+message GetUserWalletsResponse {
+    string id = 1;
+    UserWallet wallet = 2;
+}
+
+message GetWalletRequest {
+    string id = 1;
+    string user_id = 2;
+    string wallet_id = 3;
+}
+
+message GetWalletResponse {
+    string id = 1;
+    string user_id = 2; 
+    WalletDescriptor wallet = 3;
+}

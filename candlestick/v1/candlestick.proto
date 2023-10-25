@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 package candlestick.v1;
-option go_package = "github.com/warpgr/tdba_common/protocol/candlestick/v1;candlestick";
+option go_package = "github.com/warpgr/tdba_common/go/protocol/candlestick/v1;candlestick";
 
 
 
