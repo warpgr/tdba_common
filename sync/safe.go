@@ -168,14 +168,26 @@ func (swp *SafeWrapperMap[KeyType, ValueType]) WaitAndGetElementFor(key KeyType,
 	now += duration.Milliseconds()
 
 	swp.dataGuard.Lock()
+	defer swp.dataGuard.Unlock()
 	for now > time.Now().UnixMilli() {
 		if value, ok = swp.data[key]; ok {
-			swp.dataGuard.Unlock()
 			break
 		}
-		swp.dataGuard.Unlock()
 	}
 	return value, ok
+}
+
+func (swp *SafeWrapperMap[KeyType, ValueType]) TryGetElements(keys []KeyType) map[KeyType]ValueType {
+	swp.dataGuard.Lock()
+	defer swp.dataGuard.Unlock()
+
+	desired := make(map[KeyType]ValueType)
+	for _, key := range keys {
+		if value, ok := swp.data[key]; ok {
+			desired[key] = value
+		}
+	}
+	return desired
 }
 
 func (swp *SafeWrapperMap[KeyType, ValueType]) GetKeys() []KeyType {
