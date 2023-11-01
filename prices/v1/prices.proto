@@ -43,6 +43,7 @@ message GetPriceFromToResponse {
     string id = 1;
     string exchange = 2;
     double price = 3;
+    int64 time_point = 4;
 }
 
 message GetPricesFromToRequest {
@@ -57,4 +58,5 @@ message GetPricesFromToResponse {
     string id = 1;
     string exchange = 2;
     map <string, double> prices = 3;
+    int64 time_point = 4;
 }
