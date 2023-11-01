@@ -26,10 +26,14 @@ func NewMongoCollection[DataType interface{}](client *mongo.Client, dbName, coll
 	mc := MongoCollection[DataType]{
 		collection: client.Database(dbName).Collection(collectionName),
 	}
-	indexModel := mongo.IndexModel{
-		Keys: bson.D{{Key: indexName, Value: 1}},
+	var err error
+	if indexName != "" {
+		indexModel := mongo.IndexModel{
+			Keys: bson.D{{Key: indexName, Value: 1}},
+		}
+		_, err = mc.collection.Indexes().CreateOne(context.Background(), indexModel)
 	}
-	_, err := mc.collection.Indexes().CreateOne(context.Background(), indexModel)
+
 	return &mc, err
 }
 
