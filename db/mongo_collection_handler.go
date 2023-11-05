@@ -38,40 +38,31 @@ func NewMongoCollection[DataType interface{}](client *mongo.Client, dbName, coll
 }
 
 func (mc *MongoCollection[DataType]) GetElementBy(key string, value interface{}) (DataType, error) {
-	var result DataType
-	return result, mc.collection.FindOne(context.Background(), bson.D{bson.E{Key: key, Value: value}}).Decode(&result)
+	return mc.FindOneWithCustomFilter(bson.D{bson.E{Key: key, Value: value}})
 }
 
 func (mc *MongoCollection[DataType]) GetElementsBy(key string, value interface{}) ([]DataType, error) {
-	cursor, err := mc.collection.Find(context.Background(), bson.D{bson.E{Key: key, Value: value}})
-	if err != nil {
-		return nil, err
-	}
-	var results []DataType
-	return results, cursor.All(context.Background(), &results)
+	filter := bson.D{bson.E{Key: key, Value: value}}
+	return mc.FindManyWithCustomFilter(filter)
 }
 
 func (mc *MongoCollection[DataType]) GetElementsFromTo(fromKey, toKey string, from, to interface{}) ([]DataType, error) {
-	cursor, err := mc.collection.Find(context.Background(), bson.D{
+	filter := bson.D{
 		{Key: "$and",
 			Value: bson.A{
 				bson.D{{Key: fromKey, Value: bson.D{{Key: "$gt", Value: from}}}},
 				bson.D{{Key: toKey, Value: bson.D{{Key: "$lte", Value: to}}}},
 			},
 		},
-	})
-	if err != nil {
-		return nil, err
 	}
-	var results []DataType
-	return results, cursor.All(context.Background(), &results)
+	return mc.FindManyWithCustomFilter(filter)
 }
 
 func (mc *MongoCollection[DataType]) UpdateBy(key string, value interface{}, updated DataType) (interface{}, error) {
 	return mc.collection.UpdateOne(context.Background(), bson.D{{Key: key, Value: value}}, updated)
 }
 
-func (mc *MongoCollection[DataType]) InsertOrder(element *DataType) (interface{}, error) {
+func (mc *MongoCollection[DataType]) InsertElement(element *DataType) (interface{}, error) {
 	if element == nil {
 		return nil, fmt.Errorf("Can't insert empty element in collection.")
 	}
@@ -79,7 +70,7 @@ func (mc *MongoCollection[DataType]) InsertOrder(element *DataType) (interface{}
 	return res.InsertedID, err
 }
 
-func (uod *MongoCollection[DataType]) InsertOrders(elements []DataType) (interface{}, error) {
+func (mc *MongoCollection[DataType]) InsertElements(elements []DataType) (interface{}, error) {
 	var docs []interface{}
 	for _, element := range elements {
 		serializedDoc, err := bson.Marshal(&element)
@@ -89,5 +80,23 @@ func (uod *MongoCollection[DataType]) InsertOrders(elements []DataType) (interfa
 		docs = append(docs, serializedDoc)
 	}
 
-	return uod.collection.InsertMany(context.Background(), docs)
+	return mc.collection.InsertMany(context.Background(), docs)
+}
+
+func (mc *MongoCollection[DataType]) RemoveElement(key, value string) (interface{}, error) {
+	return mc.collection.DeleteOne(context.Background(), bson.D{bson.E{Key: key, Value: value}})
+}
+
+func (mc *MongoCollection[DataType]) FindOneWithCustomFilter(filter bson.D) (DataType, error) {
+	var result DataType
+	return result, mc.collection.FindOne(context.Background(), filter).Decode(&result)
+}
+
+func (mc *MongoCollection[DataType]) FindManyWithCustomFilter(filter bson.D) ([]DataType, error) {
+	cursor, err := mc.collection.Find(context.Background(), filter)
+	if err != nil {
+		return nil, err
+	}
+	var results []DataType
+	return results, cursor.All(context.Background(), &results)
 }
