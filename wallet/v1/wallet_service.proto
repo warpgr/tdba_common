@@ -9,6 +9,7 @@ import "wallet/v1/wallet.proto";
 
 service WalletService {
     rpc CreateWallet(CreateWalletRequest) returns (CreateWalletRequest) {}
+    rpc DeleteWallet(GetWalletRequest) returns (GetWalletResponse) {}
     rpc GetWallet(GetWalletRequest) returns(GetWalletResponse) {}
     rpc GetUserWallets(GetUserWalletsRequest) returns (GetUserWalletsResponse) {}
 }
