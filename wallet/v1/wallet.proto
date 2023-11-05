@@ -7,7 +7,7 @@ option go_package = "github.com/warpgr/tdba_common/go/protocol/wallet/v1;wallet"
 message SimpleWallet {
     string wallet_id = 1;
     string exchange = 2;
-    map<string, double> assests = 3;
+    map<string, double> assets = 3;
 }
 
 message UserWallets {
