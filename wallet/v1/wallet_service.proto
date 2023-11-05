@@ -36,6 +36,7 @@ message GetWalletResponse {
 message GetUserWalletsRequest {
     string id = 1;
     string user_id = 2;
+    string exchange = 3;
 }
 
 message GetUserWalletsResponse {
