@@ -9,6 +9,7 @@ message GetPriceForRequest {
     string exchange = 2;
     string symbol = 3;
     int64 suspend_mili = 4;
+    string additional = 5;
 }
 
 message GetPriceForResponse {
@@ -23,6 +24,7 @@ message GetPricesForRequest {
     string exchange = 2;
     repeated string symbols = 3;
     int64 suspend_mili = 4; 
+    string additional = 5;
 }
 
 message GetPricesForResponse {
@@ -37,6 +39,7 @@ message GetPriceFromToRequest {
     string symbol = 3;
     int64 from = 4;
     int64 to = 5;
+    string additional = 6;
 }
 
 message GetPriceFromToResponse {
@@ -52,6 +55,7 @@ message GetPricesFromToRequest {
     repeated string symbols = 3;
     int64 from = 4;
     int64 to = 5;
+    string additional = 6;
 }
 
 message GetPricesFromToResponse {
