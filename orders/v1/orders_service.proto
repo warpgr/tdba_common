@@ -23,7 +23,7 @@ service OrdersService {
 
 message PlaceOrderRequest {
     string id = 1;
-    string usder_id = 2;
+    string user_id = 2;
     UserCredentials user_credentials = 3;
     CreateOrder order = 4;
 }
@@ -37,7 +37,7 @@ message OrderStatusRequest {
 
 message OrderStatusResponse {
     string id = 1;
-    string usder_id = 2;
+    string user_id = 2;
     UserCredentials user_credentials = 3;
     OrderAndExchangeType order = 4;
 }
@@ -50,7 +50,7 @@ message OrdersStatusesRequest {
 
 message OrdersStatusesResponse {
     string id = 1;
-    string usder_id = 2;
+    string user_id = 2;
     repeated OrderAndExchangeType order = 4;
 }
 
