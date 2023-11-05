@@ -29,7 +29,7 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type WalletServiceClient interface {
-	CreateWallet(ctx context.Context, in *CreateWalletRequest, opts ...grpc.CallOption) (*CreateWalletRequest, error)
+	CreateWallet(ctx context.Context, in *CreateWalletRequest, opts ...grpc.CallOption) (*GetWalletResponse, error)
 	DeleteWallet(ctx context.Context, in *GetWalletRequest, opts ...grpc.CallOption) (*GetWalletResponse, error)
 	GetWallet(ctx context.Context, in *GetWalletRequest, opts ...grpc.CallOption) (*GetWalletResponse, error)
 	GetUserWallets(ctx context.Context, in *GetUserWalletsRequest, opts ...grpc.CallOption) (*GetUserWalletsResponse, error)
@@ -43,8 +43,8 @@ func NewWalletServiceClient(cc grpc.ClientConnInterface) WalletServiceClient {
 	return &walletServiceClient{cc}
 }
 
-func (c *walletServiceClient) CreateWallet(ctx context.Context, in *CreateWalletRequest, opts ...grpc.CallOption) (*CreateWalletRequest, error) {
-	out := new(CreateWalletRequest)
+func (c *walletServiceClient) CreateWallet(ctx context.Context, in *CreateWalletRequest, opts ...grpc.CallOption) (*GetWalletResponse, error) {
+	out := new(GetWalletResponse)
 	err := c.cc.Invoke(ctx, WalletService_CreateWallet_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -83,7 +83,7 @@ func (c *walletServiceClient) GetUserWallets(ctx context.Context, in *GetUserWal
 // All implementations must embed UnimplementedWalletServiceServer
 // for forward compatibility
 type WalletServiceServer interface {
-	CreateWallet(context.Context, *CreateWalletRequest) (*CreateWalletRequest, error)
+	CreateWallet(context.Context, *CreateWalletRequest) (*GetWalletResponse, error)
 	DeleteWallet(context.Context, *GetWalletRequest) (*GetWalletResponse, error)
 	GetWallet(context.Context, *GetWalletRequest) (*GetWalletResponse, error)
 	GetUserWallets(context.Context, *GetUserWalletsRequest) (*GetUserWalletsResponse, error)
@@ -94,7 +94,7 @@ type WalletServiceServer interface {
 type UnimplementedWalletServiceServer struct {
 }
 
-func (UnimplementedWalletServiceServer) CreateWallet(context.Context, *CreateWalletRequest) (*CreateWalletRequest, error) {
+func (UnimplementedWalletServiceServer) CreateWallet(context.Context, *CreateWalletRequest) (*GetWalletResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateWallet not implemented")
 }
 func (UnimplementedWalletServiceServer) DeleteWallet(context.Context, *GetWalletRequest) (*GetWalletResponse, error) {

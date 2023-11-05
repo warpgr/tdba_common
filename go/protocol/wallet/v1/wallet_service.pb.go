@@ -21,12 +21,12 @@ var _ = math.Inf
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
 type CreateWalletRequest struct {
-	Id                   string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId               string            `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Wallet               *WalletDescriptor `protobuf:"bytes,3,opt,name=wallet,proto3" json:"wallet,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
-	XXX_unrecognized     []byte            `json:"-"`
-	XXX_sizecache        int32             `json:"-"`
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	UserId               string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Exchange             string   `protobuf:"bytes,3,opt,name=exchange,proto3" json:"exchange,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
 }
 
 func (m *CreateWalletRequest) Reset()         { *m = CreateWalletRequest{} }
@@ -68,7 +68,101 @@ func (m *CreateWalletRequest) GetUserId() string {
 	return ""
 }
 
-func (m *CreateWalletRequest) GetWallet() *WalletDescriptor {
+func (m *CreateWalletRequest) GetExchange() string {
+	if m != nil {
+		return m.Exchange
+	}
+	return ""
+}
+
+type GetWalletRequest struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	WalletId             string   `protobuf:"bytes,3,opt,name=wallet_id,json=walletId,proto3" json:"wallet_id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *GetWalletRequest) Reset()         { *m = GetWalletRequest{} }
+func (m *GetWalletRequest) String() string { return proto.CompactTextString(m) }
+func (*GetWalletRequest) ProtoMessage()    {}
+func (*GetWalletRequest) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f5cbb926e133f949, []int{1}
+}
+
+func (m *GetWalletRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetWalletRequest.Unmarshal(m, b)
+}
+func (m *GetWalletRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetWalletRequest.Marshal(b, m, deterministic)
+}
+func (m *GetWalletRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetWalletRequest.Merge(m, src)
+}
+func (m *GetWalletRequest) XXX_Size() int {
+	return xxx_messageInfo_GetWalletRequest.Size(m)
+}
+func (m *GetWalletRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetWalletRequest.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetWalletRequest proto.InternalMessageInfo
+
+func (m *GetWalletRequest) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *GetWalletRequest) GetWalletId() string {
+	if m != nil {
+		return m.WalletId
+	}
+	return ""
+}
+
+type GetWalletResponse struct {
+	Id                   string        `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Wallet               *SimpleWallet `protobuf:"bytes,3,opt,name=wallet,proto3" json:"wallet,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}      `json:"-"`
+	XXX_unrecognized     []byte        `json:"-"`
+	XXX_sizecache        int32         `json:"-"`
+}
+
+func (m *GetWalletResponse) Reset()         { *m = GetWalletResponse{} }
+func (m *GetWalletResponse) String() string { return proto.CompactTextString(m) }
+func (*GetWalletResponse) ProtoMessage()    {}
+func (*GetWalletResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_f5cbb926e133f949, []int{2}
+}
+
+func (m *GetWalletResponse) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetWalletResponse.Unmarshal(m, b)
+}
+func (m *GetWalletResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetWalletResponse.Marshal(b, m, deterministic)
+}
+func (m *GetWalletResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetWalletResponse.Merge(m, src)
+}
+func (m *GetWalletResponse) XXX_Size() int {
+	return xxx_messageInfo_GetWalletResponse.Size(m)
+}
+func (m *GetWalletResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetWalletResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_GetWalletResponse proto.InternalMessageInfo
+
+func (m *GetWalletResponse) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+func (m *GetWalletResponse) GetWallet() *SimpleWallet {
 	if m != nil {
 		return m.Wallet
 	}
@@ -87,7 +181,7 @@ func (m *GetUserWalletsRequest) Reset()         { *m = GetUserWalletsRequest{} }
 func (m *GetUserWalletsRequest) String() string { return proto.CompactTextString(m) }
 func (*GetUserWalletsRequest) ProtoMessage()    {}
 func (*GetUserWalletsRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f5cbb926e133f949, []int{1}
+	return fileDescriptor_f5cbb926e133f949, []int{3}
 }
 
 func (m *GetUserWalletsRequest) XXX_Unmarshal(b []byte) error {
@@ -123,18 +217,18 @@ func (m *GetUserWalletsRequest) GetUserId() string {
 }
 
 type GetUserWalletsResponse struct {
-	Id                   string      `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Wallet               *UserWallet `protobuf:"bytes,2,opt,name=wallet,proto3" json:"wallet,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}    `json:"-"`
-	XXX_unrecognized     []byte      `json:"-"`
-	XXX_sizecache        int32       `json:"-"`
+	Id                   string       `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Wallet               *UserWallets `protobuf:"bytes,2,opt,name=wallet,proto3" json:"wallet,omitempty"`
+	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
+	XXX_unrecognized     []byte       `json:"-"`
+	XXX_sizecache        int32        `json:"-"`
 }
 
 func (m *GetUserWalletsResponse) Reset()         { *m = GetUserWalletsResponse{} }
 func (m *GetUserWalletsResponse) String() string { return proto.CompactTextString(m) }
 func (*GetUserWalletsResponse) ProtoMessage()    {}
 func (*GetUserWalletsResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f5cbb926e133f949, []int{2}
+	return fileDescriptor_f5cbb926e133f949, []int{4}
 }
 
 func (m *GetUserWalletsResponse) XXX_Unmarshal(b []byte) error {
@@ -162,117 +256,7 @@ func (m *GetUserWalletsResponse) GetId() string {
 	return ""
 }
 
-func (m *GetUserWalletsResponse) GetWallet() *UserWallet {
-	if m != nil {
-		return m.Wallet
-	}
-	return nil
-}
-
-type GetWalletRequest struct {
-	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId               string   `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	WalletId             string   `protobuf:"bytes,3,opt,name=wallet_id,json=walletId,proto3" json:"wallet_id,omitempty"`
-	XXX_NoUnkeyedLiteral struct{} `json:"-"`
-	XXX_unrecognized     []byte   `json:"-"`
-	XXX_sizecache        int32    `json:"-"`
-}
-
-func (m *GetWalletRequest) Reset()         { *m = GetWalletRequest{} }
-func (m *GetWalletRequest) String() string { return proto.CompactTextString(m) }
-func (*GetWalletRequest) ProtoMessage()    {}
-func (*GetWalletRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f5cbb926e133f949, []int{3}
-}
-
-func (m *GetWalletRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetWalletRequest.Unmarshal(m, b)
-}
-func (m *GetWalletRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetWalletRequest.Marshal(b, m, deterministic)
-}
-func (m *GetWalletRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetWalletRequest.Merge(m, src)
-}
-func (m *GetWalletRequest) XXX_Size() int {
-	return xxx_messageInfo_GetWalletRequest.Size(m)
-}
-func (m *GetWalletRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetWalletRequest.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetWalletRequest proto.InternalMessageInfo
-
-func (m *GetWalletRequest) GetId() string {
-	if m != nil {
-		return m.Id
-	}
-	return ""
-}
-
-func (m *GetWalletRequest) GetUserId() string {
-	if m != nil {
-		return m.UserId
-	}
-	return ""
-}
-
-func (m *GetWalletRequest) GetWalletId() string {
-	if m != nil {
-		return m.WalletId
-	}
-	return ""
-}
-
-type GetWalletResponse struct {
-	Id                   string            `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	UserId               string            `protobuf:"bytes,2,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
-	Wallet               *WalletDescriptor `protobuf:"bytes,3,opt,name=wallet,proto3" json:"wallet,omitempty"`
-	XXX_NoUnkeyedLiteral struct{}          `json:"-"`
-	XXX_unrecognized     []byte            `json:"-"`
-	XXX_sizecache        int32             `json:"-"`
-}
-
-func (m *GetWalletResponse) Reset()         { *m = GetWalletResponse{} }
-func (m *GetWalletResponse) String() string { return proto.CompactTextString(m) }
-func (*GetWalletResponse) ProtoMessage()    {}
-func (*GetWalletResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_f5cbb926e133f949, []int{4}
-}
-
-func (m *GetWalletResponse) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_GetWalletResponse.Unmarshal(m, b)
-}
-func (m *GetWalletResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_GetWalletResponse.Marshal(b, m, deterministic)
-}
-func (m *GetWalletResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_GetWalletResponse.Merge(m, src)
-}
-func (m *GetWalletResponse) XXX_Size() int {
-	return xxx_messageInfo_GetWalletResponse.Size(m)
-}
-func (m *GetWalletResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_GetWalletResponse.DiscardUnknown(m)
-}
-
-var xxx_messageInfo_GetWalletResponse proto.InternalMessageInfo
-
-func (m *GetWalletResponse) GetId() string {
-	if m != nil {
-		return m.Id
-	}
-	return ""
-}
-
-func (m *GetWalletResponse) GetUserId() string {
-	if m != nil {
-		return m.UserId
-	}
-	return ""
-}
-
-func (m *GetWalletResponse) GetWallet() *WalletDescriptor {
+func (m *GetUserWalletsResponse) GetWallet() *UserWallets {
 	if m != nil {
 		return m.Wallet
 	}
@@ -281,10 +265,10 @@ func (m *GetWalletResponse) GetWallet() *WalletDescriptor {
 
 func init() {
 	proto.RegisterType((*CreateWalletRequest)(nil), "wallet.v1.CreateWalletRequest")
-	proto.RegisterType((*GetUserWalletsRequest)(nil), "wallet.v1.GetUserWalletsRequest")
-	proto.RegisterType((*GetUserWalletsResponse)(nil), "wallet.v1.GetUserWalletsResponse")
 	proto.RegisterType((*GetWalletRequest)(nil), "wallet.v1.GetWalletRequest")
 	proto.RegisterType((*GetWalletResponse)(nil), "wallet.v1.GetWalletResponse")
+	proto.RegisterType((*GetUserWalletsRequest)(nil), "wallet.v1.GetUserWalletsRequest")
+	proto.RegisterType((*GetUserWalletsResponse)(nil), "wallet.v1.GetUserWalletsResponse")
 }
 
 func init() {
@@ -292,28 +276,28 @@ func init() {
 }
 
 var fileDescriptor_f5cbb926e133f949 = []byte{
-	// 356 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xac, 0x53, 0x4d, 0x4f, 0xc2, 0x40,
-	0x14, 0x84, 0x92, 0xa0, 0x3c, 0x91, 0xe8, 0x1a, 0x90, 0x14, 0x43, 0xb0, 0x27, 0x2e, 0x76, 0x03,
-	0xdc, 0xd4, 0x83, 0x51, 0x12, 0x24, 0x5e, 0x0c, 0xc6, 0x60, 0xbc, 0x90, 0xd2, 0xbe, 0x60, 0x93,
-	0xc2, 0x96, 0xdd, 0x05, 0x7e, 0xa7, 0xff, 0xc8, 0xd0, 0xc5, 0xb5, 0x14, 0xd4, 0xf8, 0x71, 0xdb,
-	0xce, 0xcc, 0xce, 0x4e, 0xa6, 0xef, 0x41, 0x75, 0xe1, 0x04, 0x01, 0x4a, 0x3a, 0x6f, 0x50, 0x75,
-	0x1a, 0x08, 0xe4, 0x73, 0xdf, 0x45, 0x3b, 0xe4, 0x4c, 0x32, 0x92, 0x53, 0xa8, 0x3d, 0x6f, 0x98,
-	0xa5, 0xa4, 0x54, 0x49, 0x2c, 0x01, 0x47, 0x37, 0x1c, 0x1d, 0x89, 0xfd, 0x08, 0xed, 0xe1, 0x74,
-	0x86, 0x42, 0x92, 0x02, 0x18, 0xbe, 0x57, 0x4e, 0xd7, 0xd2, 0xf5, 0x5c, 0xcf, 0xf0, 0x3d, 0x72,
-	0x0c, 0x3b, 0x33, 0x81, 0x7c, 0xe0, 0x7b, 0x65, 0x23, 0x02, 0xb3, 0xcb, 0xcf, 0xae, 0x47, 0x5a,
-	0x90, 0x55, 0x7e, 0xe5, 0x4c, 0x2d, 0x5d, 0xdf, 0x6b, 0x56, 0x6c, 0xfd, 0xa6, 0xad, 0x2c, 0xdb,
-	0x28, 0x5c, 0xee, 0x87, 0x92, 0xf1, 0xde, 0x4a, 0x6a, 0x5d, 0x41, 0xb1, 0x83, 0xf2, 0x51, 0x20,
-	0x57, 0x12, 0xf1, 0xd3, 0x67, 0xad, 0x3e, 0x94, 0x92, 0x0e, 0x22, 0x64, 0x13, 0x81, 0x1b, 0x16,
-	0x67, 0x3a, 0xa0, 0x11, 0x05, 0x2c, 0xc6, 0x02, 0x7e, 0xdc, 0xd7, 0xd1, 0x9e, 0xe0, 0xa0, 0x83,
-	0xf2, 0x97, 0x65, 0x54, 0x60, 0xd5, 0xf8, 0x92, 0xca, 0x44, 0xd4, 0xae, 0x02, 0xba, 0x9e, 0x35,
-	0x85, 0xc3, 0x98, 0xf3, 0x27, 0x69, 0xff, 0xb5, 0xe7, 0xe6, 0xab, 0x01, 0xfb, 0x8a, 0x7c, 0x50,
-	0x73, 0x41, 0xee, 0x21, 0x1f, 0xff, 0xdd, 0xa4, 0x1a, 0xb3, 0xd9, 0x32, 0x07, 0xe6, 0x37, 0xbc,
-	0x95, 0x22, 0x77, 0x90, 0x6f, 0x63, 0x80, 0xda, 0x31, 0x1e, 0x2c, 0xd9, 0xa4, 0x79, 0xb2, 0x9d,
-	0x54, 0x65, 0x58, 0x29, 0x72, 0x0b, 0x39, 0x0d, 0xff, 0xcd, 0xa9, 0x0f, 0x85, 0xf5, 0x01, 0x21,
-	0xb5, 0xf5, 0x1b, 0x9b, 0xd3, 0x67, 0x9e, 0x7e, 0xa1, 0x78, 0x37, 0xbe, 0xbe, 0x7c, 0x3e, 0x1f,
-	0xf9, 0xf2, 0x65, 0x36, 0xb4, 0x5d, 0x36, 0xa6, 0x0b, 0x87, 0x87, 0x23, 0x4e, 0xa5, 0x37, 0x74,
-	0x06, 0x2e, 0x1b, 0x8f, 0xd9, 0x84, 0x8e, 0x18, 0x8d, 0x56, 0xcb, 0x65, 0x01, 0xd5, 0x4b, 0x77,
-	0xa1, 0x4e, 0xc3, 0x6c, 0x44, 0xb5, 0xde, 0x02, 0x00, 0x00, 0xff, 0xff, 0x4c, 0x66, 0xb0, 0x94,
-	0xba, 0x03, 0x00, 0x00,
+	// 357 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xa4, 0x93, 0x5f, 0x4b, 0x32, 0x41,
+	0x14, 0xc6, 0x5f, 0xf7, 0x05, 0xdf, 0xd7, 0x93, 0x49, 0x4d, 0xa4, 0xb2, 0x86, 0xd8, 0x5e, 0x75,
+	0xb5, 0x83, 0x76, 0x57, 0x41, 0x51, 0x81, 0x49, 0xd0, 0x85, 0x16, 0x86, 0x37, 0xb2, 0xee, 0x1e,
+	0xd6, 0x85, 0x5d, 0x67, 0x9b, 0x19, 0xb5, 0x6f, 0xd9, 0x57, 0x0a, 0x67, 0xd6, 0x65, 0xfd, 0x93,
+	0x14, 0xdd, 0xcd, 0x3c, 0xe7, 0x39, 0x3f, 0x9e, 0x33, 0x87, 0x81, 0xfa, 0xdc, 0x09, 0x43, 0x94,
+	0x74, 0xd6, 0xa4, 0xfa, 0x34, 0x14, 0xc8, 0x67, 0x81, 0x8b, 0x76, 0xcc, 0x99, 0x64, 0xa4, 0xa0,
+	0x55, 0x7b, 0xd6, 0x34, 0xcb, 0xeb, 0x56, 0x6d, 0xb1, 0x06, 0x70, 0x74, 0xc7, 0xd1, 0x91, 0xd8,
+	0x57, 0x6a, 0x17, 0xdf, 0xa6, 0x28, 0x24, 0x29, 0x81, 0x11, 0x78, 0xd5, 0x5c, 0x23, 0x77, 0x56,
+	0xe8, 0x1a, 0x81, 0x47, 0x2a, 0xf0, 0x6f, 0x2a, 0x90, 0x0f, 0x03, 0xaf, 0x6a, 0x28, 0x31, 0xbf,
+	0xb8, 0x76, 0x3c, 0x62, 0xc2, 0x7f, 0x7c, 0x77, 0xc7, 0xce, 0xc4, 0xc7, 0xea, 0x5f, 0x55, 0x49,
+	0xef, 0xd6, 0x35, 0x1c, 0xb4, 0x51, 0xee, 0x06, 0xd7, 0x20, 0x09, 0xb9, 0x40, 0x27, 0x00, 0x2d,
+	0x74, 0x3c, 0xeb, 0x19, 0x0e, 0x33, 0x00, 0x11, 0xb3, 0x89, 0xc0, 0x0d, 0x02, 0x85, 0xbc, 0x6e,
+	0x50, 0xed, 0x7b, 0xad, 0x8a, 0x9d, 0x4e, 0x6d, 0xf7, 0x82, 0x28, 0x0e, 0x97, 0xa3, 0x25, 0x36,
+	0xeb, 0x06, 0x8e, 0xdb, 0x28, 0x5f, 0x04, 0x72, 0x5d, 0x10, 0x3f, 0x1d, 0xda, 0x7a, 0x85, 0xf2,
+	0x3a, 0xe1, 0x8b, 0x70, 0x76, 0x1a, 0xce, 0x50, 0xe1, 0xca, 0x99, 0x70, 0xd9, 0xfe, 0xc4, 0xd5,
+	0xfa, 0x30, 0x60, 0x5f, 0x6b, 0x3d, 0xbd, 0x49, 0xf2, 0x04, 0xc5, 0xec, 0x82, 0x48, 0x3d, 0x43,
+	0xd8, 0xb2, 0x39, 0xf3, 0x24, 0x53, 0xdf, 0x78, 0x3c, 0xeb, 0x0f, 0x79, 0x84, 0xe2, 0x3d, 0x86,
+	0x98, 0xf2, 0x6a, 0xdb, 0xfd, 0xdf, 0x83, 0x3d, 0x40, 0x21, 0x95, 0x7f, 0x47, 0xea, 0x43, 0x69,
+	0xf5, 0x49, 0x49, 0x63, 0xb5, 0x63, 0x73, 0x5f, 0xe6, 0xe9, 0x0e, 0xc7, 0x12, 0x7c, 0x7b, 0x35,
+	0xb8, 0xf0, 0x03, 0x39, 0x9e, 0x8e, 0x6c, 0x97, 0x45, 0x74, 0xee, 0xf0, 0xd8, 0xe7, 0x54, 0x7a,
+	0x23, 0x67, 0xe8, 0xb2, 0x28, 0x62, 0x13, 0xea, 0x33, 0xaa, 0xbe, 0x82, 0xcb, 0x42, 0x9a, 0x7e,
+	0x92, 0x4b, 0x7d, 0x1a, 0xe5, 0x55, 0xe9, 0xfc, 0x33, 0x00, 0x00, 0xff, 0xff, 0x2a, 0xb5, 0x4c,
+	0x43, 0x6a, 0x03, 0x00, 0x00,
 }

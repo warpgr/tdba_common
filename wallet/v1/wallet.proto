@@ -4,13 +4,13 @@ package wallet.v1;
 option go_package = "github.com/warpgr/tdba_common/go/protocol/wallet/v1;wallet";
 
 
-message WalletDescriptor {
+message SimpleWallet {
     string wallet_id = 1;
     string exchange = 2;
     map<string, double> assests = 3;
 }
 
-message UserWallet {
+message UserWallets {
     string user_id = 1;
-    repeated WalletDescriptor wallets = 2;
+    repeated SimpleWallet wallets = 2;
 }
