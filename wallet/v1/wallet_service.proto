@@ -18,6 +18,7 @@ message CreateWalletRequest {
     string id = 1;
     string user_id = 2;
     string exchange = 3;
+    map<string, double> assests = 4;
 }
 
 message GetWalletRequest {
