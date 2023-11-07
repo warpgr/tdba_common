@@ -19,13 +19,13 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	OrdersService_PlaceOrder_FullMethodName                  = "/orders.v1.OrdersService/PlaceOrder"
-	OrdersService_CancelOrder_FullMethodName                 = "/orders.v1.OrdersService/CancelOrder"
-	OrdersService_GetOrder_FullMethodName                    = "/orders.v1.OrdersService/GetOrder"
-	OrdersService_PollOrder_FullMethodName                   = "/orders.v1.OrdersService/PollOrder"
-	OrdersService_GetOrders_FullMethodName                   = "/orders.v1.OrdersService/GetOrders"
-	OrdersService_PollOrders_FullMethodName                  = "/orders.v1.OrdersService/PollOrders"
-	OrdersService_GetOrdersByUserCredenntials_FullMethodName = "/orders.v1.OrdersService/GetOrdersByUserCredenntials"
+	OrdersService_PlaceOrder_FullMethodName                 = "/orders.v1.OrdersService/PlaceOrder"
+	OrdersService_CancelOrder_FullMethodName                = "/orders.v1.OrdersService/CancelOrder"
+	OrdersService_GetOrder_FullMethodName                   = "/orders.v1.OrdersService/GetOrder"
+	OrdersService_PollOrder_FullMethodName                  = "/orders.v1.OrdersService/PollOrder"
+	OrdersService_GetOrders_FullMethodName                  = "/orders.v1.OrdersService/GetOrders"
+	OrdersService_PollOrders_FullMethodName                 = "/orders.v1.OrdersService/PollOrders"
+	OrdersService_GetOrdersByUserCredentials_FullMethodName = "/orders.v1.OrdersService/GetOrdersByUserCredentials"
 )
 
 // OrdersServiceClient is the client API for OrdersService service.
@@ -38,7 +38,7 @@ type OrdersServiceClient interface {
 	PollOrder(ctx context.Context, in *OrderStatusRequest, opts ...grpc.CallOption) (OrdersService_PollOrderClient, error)
 	GetOrders(ctx context.Context, in *OrdersStatusesRequest, opts ...grpc.CallOption) (*OrdersStatusesResponse, error)
 	PollOrders(ctx context.Context, in *OrdersStatusesRequest, opts ...grpc.CallOption) (OrdersService_PollOrdersClient, error)
-	GetOrdersByUserCredenntials(ctx context.Context, in *GetOrderByUserCredentials, opts ...grpc.CallOption) (*GetOrdersByUserCredentialsResponse, error)
+	GetOrdersByUserCredentials(ctx context.Context, in *GetOrderByUserCredentials, opts ...grpc.CallOption) (*GetOrdersByUserCredentialsResponse, error)
 }
 
 type ordersServiceClient struct {
@@ -149,9 +149,9 @@ func (x *ordersServicePollOrdersClient) Recv() (*OrdersStatusesResponse, error) 
 	return m, nil
 }
 
-func (c *ordersServiceClient) GetOrdersByUserCredenntials(ctx context.Context, in *GetOrderByUserCredentials, opts ...grpc.CallOption) (*GetOrdersByUserCredentialsResponse, error) {
+func (c *ordersServiceClient) GetOrdersByUserCredentials(ctx context.Context, in *GetOrderByUserCredentials, opts ...grpc.CallOption) (*GetOrdersByUserCredentialsResponse, error) {
 	out := new(GetOrdersByUserCredentialsResponse)
-	err := c.cc.Invoke(ctx, OrdersService_GetOrdersByUserCredenntials_FullMethodName, in, out, opts...)
+	err := c.cc.Invoke(ctx, OrdersService_GetOrdersByUserCredentials_FullMethodName, in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -168,7 +168,7 @@ type OrdersServiceServer interface {
 	PollOrder(*OrderStatusRequest, OrdersService_PollOrderServer) error
 	GetOrders(context.Context, *OrdersStatusesRequest) (*OrdersStatusesResponse, error)
 	PollOrders(*OrdersStatusesRequest, OrdersService_PollOrdersServer) error
-	GetOrdersByUserCredenntials(context.Context, *GetOrderByUserCredentials) (*GetOrdersByUserCredentialsResponse, error)
+	GetOrdersByUserCredentials(context.Context, *GetOrderByUserCredentials) (*GetOrdersByUserCredentialsResponse, error)
 	mustEmbedUnimplementedOrdersServiceServer()
 }
 
@@ -194,8 +194,8 @@ func (UnimplementedOrdersServiceServer) GetOrders(context.Context, *OrdersStatus
 func (UnimplementedOrdersServiceServer) PollOrders(*OrdersStatusesRequest, OrdersService_PollOrdersServer) error {
 	return status.Errorf(codes.Unimplemented, "method PollOrders not implemented")
 }
-func (UnimplementedOrdersServiceServer) GetOrdersByUserCredenntials(context.Context, *GetOrderByUserCredentials) (*GetOrdersByUserCredentialsResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetOrdersByUserCredenntials not implemented")
+func (UnimplementedOrdersServiceServer) GetOrdersByUserCredentials(context.Context, *GetOrderByUserCredentials) (*GetOrdersByUserCredentialsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetOrdersByUserCredentials not implemented")
 }
 func (UnimplementedOrdersServiceServer) mustEmbedUnimplementedOrdersServiceServer() {}
 
@@ -324,20 +324,20 @@ func (x *ordersServicePollOrdersServer) Send(m *OrdersStatusesResponse) error {
 	return x.ServerStream.SendMsg(m)
 }
 
-func _OrdersService_GetOrdersByUserCredenntials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _OrdersService_GetOrdersByUserCredentials_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetOrderByUserCredentials)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(OrdersServiceServer).GetOrdersByUserCredenntials(ctx, in)
+		return srv.(OrdersServiceServer).GetOrdersByUserCredentials(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: OrdersService_GetOrdersByUserCredenntials_FullMethodName,
+		FullMethod: OrdersService_GetOrdersByUserCredentials_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(OrdersServiceServer).GetOrdersByUserCredenntials(ctx, req.(*GetOrderByUserCredentials))
+		return srv.(OrdersServiceServer).GetOrdersByUserCredentials(ctx, req.(*GetOrderByUserCredentials))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -366,8 +366,8 @@ var OrdersService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _OrdersService_GetOrders_Handler,
 		},
 		{
-			MethodName: "GetOrdersByUserCredenntials",
-			Handler:    _OrdersService_GetOrdersByUserCredenntials_Handler,
+			MethodName: "GetOrdersByUserCredentials",
+			Handler:    _OrdersService_GetOrdersByUserCredentials_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

@@ -18,7 +18,7 @@ service OrdersService {
     rpc GetOrders(OrdersStatusesRequest) returns(OrdersStatusesResponse) {}
     rpc PollOrders(OrdersStatusesRequest) returns(stream OrdersStatusesResponse) {}
     
-    rpc GetOrdersByUserCredenntials(GetOrderByUserCredentials) returns(GetOrdersByUserCredentialsResponse) {}
+    rpc GetOrdersByUserCredentials(GetOrderByUserCredentials) returns(GetOrdersByUserCredentialsResponse) {}
 }
 
 message PlaceOrderRequest {

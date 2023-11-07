@@ -57,6 +57,7 @@ message OrderAndExchangeType {
 message UserCredentials {
     string wallet_id = 1;
     string session_id = 2;
+    string exchange = 3;
 }
 
 message OrderAndUserCredentials {
