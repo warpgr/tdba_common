@@ -61,6 +61,6 @@ message GetOrderByUserCredentials {
 
 message GetOrdersByUserCredentialsResponse {
     string id = 1;
-    UserCredentials user_credetials = 2;
+    UserCredentials user_credentials = 2;
     repeated ExchangeOrder  orders = 3;
 }
