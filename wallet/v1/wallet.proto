@@ -8,6 +8,8 @@ message SimpleWallet {
     string wallet_id = 1;
     string exchange = 2;
     map<string, double> assets = 3;
+    double base_asset = 4;
+    string baseAssetName = 5;
 }
 
 message UserWallets {
