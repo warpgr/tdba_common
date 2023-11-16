@@ -25,6 +25,7 @@ type Promise[DataType any] interface {
 	CloseChannel()
 	Fail(err error)
 	OnDone(onClose func()) Promise[DataType]
+	Context() context.Context
 }
 
 type sharedState[DataType any] struct {
@@ -34,7 +35,7 @@ type sharedState[DataType any] struct {
 	done    *sync.WaitGroup
 	channel chan DataType
 
-	reason          error
+	reason          *Error
 	inProgress      *atomic.Bool
 	isChannelClosed *atomic.Bool
 
@@ -68,7 +69,7 @@ func newSharedState[DataType any](ctx context.Context, cancel context.CancelFunc
 		cancel:              cancel,
 		done:                &sync.WaitGroup{},
 		channel:             make(chan DataType, channelBuffSize),
-		reason:              nil,
+		reason:              NewError(_zeroError),
 		inProgress:          &atomic.Bool{},
 		isChannelClosed:     &atomic.Bool{},
 		isDataHandlerExists: &atomic.Bool{},
@@ -82,8 +83,8 @@ func newSharedState[DataType any](ctx context.Context, cancel context.CancelFunc
 		if onDone := sd.onDone.Load(); onDone != nil {
 			(*onDone)()
 		}
-		if onFailure := sd.onFailure.Load(); onFailure != nil {
-			(*onFailure)(sd.reason)
+		if onFailure := sd.onFailure.Load(); onFailure != nil && sd.reason.Load() != nil {
+			(*onFailure)(sd.reason.Load())
 		}
 		sd.inProgress.Store(false)
 		sd.done.Done()
@@ -146,11 +147,15 @@ func (sd *sharedState[DataType]) Cancel() {
 
 func (sd *sharedState[DataType]) Wait() error {
 	sd.done.Wait()
-	return sd.reason
+	return sd.reason.Load()
 }
 
 func (sd *sharedState[DataType]) IsInProgress() bool {
 	return sd.inProgress.Load()
+}
+
+func (sd *sharedState[DataType]) Context() context.Context {
+	return sd.ctx
 }
 
 func (sd *sharedState[DataType]) Send(data DataType) error {
@@ -159,7 +164,7 @@ func (sd *sharedState[DataType]) Send(data DataType) error {
 	}
 	if sd.onData.Load() != nil {
 		if err := (*sd.onData.Load())(data); err != nil {
-			sd.reason = err
+			sd.reason.Store(err)
 			sd.Cancel()
 		}
 	} else {
@@ -176,10 +181,10 @@ func (sd *sharedState[DataType]) CloseChannel() {
 }
 
 func (sd *sharedState[DataType]) Fail(err error) {
-	if err != nil {
+	if err == nil {
 		return
 	}
-	sd.reason = err
+	sd.reason.Store(err)
 	sd.Cancel()
 }
 

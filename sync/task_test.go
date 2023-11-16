@@ -104,7 +104,6 @@ func (ss *SharedStateSuite) TestHandlersWithCancel() {
 
 	future = AsyncTask[int32](ctx, channelBufSize,
 		func(promise Promise[int32]) {
-
 			promise.OnDone(func() {
 				ss.True(iter.CompareAndSwap(iter.Load(), iter.Load()+1))
 			})
@@ -121,6 +120,74 @@ func (ss *SharedStateSuite) TestHandlersWithCancel() {
 
 	ss.Nil(future.Wait())
 	ss.Equal(int32(11), iter.Load())
+}
+
+func (ss *SharedStateSuite) TestHandlersWithCancelChain() {
+	ctx := context.Background()
+	channelBufSize := 0
+	iter := atomic.Int32{}
+	someErrorFromFirstPromise := fmt.Errorf("some error from first promise")
+	someErrorFromSecondPromise := fmt.Errorf("some error from second promise")
+
+	firstFuture := AsyncTask[int32](ctx, channelBufSize,
+		func(firstPromise Promise[int32]) {
+			firstPromise.OnDone(func() {
+				iter.Add(1)
+			})
+
+			AsyncTask[int32](firstPromise.Context(), channelBufSize,
+				func(secondPromise Promise[int32]) {
+					secondPromise.OnDone(func() {
+						iter.Add(1)
+					})
+
+					// Some job here with thirdPromise
+					thirdFuture := AsyncTask[string](secondPromise.Context(), channelBufSize,
+						func(thirdPromise Promise[string]) {
+							thirdPromise.OnDone(func() {
+								iter.Add(1)
+							})
+							iter.Add(1)
+							thirdPromise.Send("some string")
+						}).
+						OnData(func(data string) error {
+							ss.Equal("some string", data)
+							iter.Add(1)
+							return nil
+						})
+					// Task complete without any errors.
+					ss.Nil(thirdFuture.Wait())
+
+					iter.Add(1)
+					secondPromise.Send(iter.Load())
+				}).
+				OnData(func(data int32) error {
+					ss.Equal(iter.Load(), data)
+					// Something happened in data handling.
+					return someErrorFromSecondPromise
+				}).
+				OnFailure(func(err error) {
+					iter.Add(1)
+					ss.Equal(someErrorFromSecondPromise, err)
+					// Broadcasting error to parent promise.
+					firstPromise.Fail(fmt.Errorf("%v %v", someErrorFromFirstPromise, err))
+				}).Wait()
+
+			// Unreachable. firstPromise OnFailure callback will invoke before this increment.
+			firstPromise.Send(iter.Load())
+
+		}).
+		OnData(func(data int32) error {
+			iter.Add(1)
+			return nil
+		}).
+		OnFailure(func(err error) {
+			iter.Add(1)
+		})
+
+	ss.Equal(fmt.Errorf("%v %v", someErrorFromFirstPromise, someErrorFromSecondPromise), firstFuture.Wait())
+	ss.Equal(int32(9), iter.Load())
+
 }
 
 func (ss *SharedStateSuite) TestHandlersWithTimeout() {
@@ -155,7 +222,6 @@ func (ss *SharedStateSuite) TestHandlersWithTimeout() {
 			for ; secondIter.Load() < 10; secondIter.Add(1) {
 				promise.Send(int32(secondIter.Load()))
 			}
-
 		}).
 		OnData(func(data int32) error {
 			ss.Equal(secondIter.Load(), data)
@@ -171,4 +237,28 @@ func (ss *SharedStateSuite) TestHandlersWithTimeout() {
 
 	ss.Equal(expectedError, future.Wait())
 	ss.Equal(int32(12), secondIter.Load())
+
+	c := atomic.Int32{}
+	f := atomic.Int32{}
+	futureStr := AsyncTaskWithTimeOut[string](ctx, channelBufSize, cancelAfter,
+		func(promise Promise[string]) {
+			promise.OnDone(func() {
+				c.Store(333)
+				promise.Fail(expectedError)
+			})
+			for {
+				// Infinite loop.
+				promise.Send("int32()")
+			}
+		}).
+		OnData(func(data string) error {
+			return nil
+		}).
+		OnFailure(func(err error) {
+			f.Store(112)
+		})
+
+	ss.Equal(expectedError, futureStr.Wait())
+	ss.Equal(int32(112), f.Load())
+	ss.Equal(int32(333), c.Load())
 }
